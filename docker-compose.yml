@@ -1,0 +1,18 @@
+version: '3.8'  # The version of Docker Compose syntax
+
+services:
+  db:
+    container_name: roamsl_db
+    image: postgres:latest  # Use the latest PostgreSQL Docker image from Docker Hub
+    restart: always  # Restart the container automatically if it stops
+    environment:
+      POSTGRES_DB: ${DATABASE_DB}  # Set the name of the database to be created
+      POSTGRES_USER: ${DATABASE_USER}  # Set the PostgreSQL user
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}  # Set the password for the PostgreSQL user
+    ports:
+      - "${DATABASE_PORT}:5432"  # Expose port 5432 on the host machine and forward to port 5432 in the container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Mount a volume for persisting PostgreSQL data
+
+volumes:
+  postgres_data:  # Create a named volume to persist PostgreSQL data
