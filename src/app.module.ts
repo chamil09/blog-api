@@ -5,6 +5,7 @@ import { DbConfig } from './config/orm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config/dist';
 import { PostModule } from './post/post.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { PostModule } from './post/post.module';
     TypeOrmModule.forRootAsync({
       useClass: DbConfig
     }),
-    PostModule
+    PostModule,
+    CommentModule
   ],
   controllers: [AppController],
   providers: [AppService],

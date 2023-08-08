@@ -24,15 +24,26 @@ export class PostService {
         }
     }
 
-    async getAllPosts() {
+    async getPaginatedPosts(page: number, limit: number) {
         try {
-            const posts = await this.postRepository.find();
-            return posts;
+            const skip = (page - 1) * limit;
+            const [posts, totalCount] = await this.postRepository.findAndCount({
+                take: limit,
+                skip,
+            });
+    
+            const totalPages = Math.ceil(totalCount / limit);
+    
+            return {
+                posts,
+                currentPage: page,
+                totalPages,
+            };
         } catch (error) {
             throw new NotFoundException('Failed to fetch posts');
         }
     }
-
+    
     async getPostById(id: number) {
         try {
             const post = await this.postRepository.findOne({ where: { id } });

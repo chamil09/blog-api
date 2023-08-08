@@ -1,8 +1,8 @@
-import { Controller, Get, Put, Delete, Param, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Param, Post, Body, UsePipes, ValidationPipe, Query } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from 'src/dtos/create-post.dto';
 
-@Controller('post')
+@Controller('posts')
 export class PostController {
     constructor(private readonly postService: PostService) {}
 
@@ -13,8 +13,11 @@ export class PostController {
     }
 
     @Get()
-    async getAllPosts() {
-        return this.postService.getAllPosts();
+    async getAllPosts(@Query('page') page: number, @Query('limit') limit: number) {
+    page = page || 1;
+    limit = limit || 3;
+
+    return this.postService.getPaginatedPosts(page, limit);
     }
 
     @Get(':id')
