@@ -22,19 +22,38 @@ export class CommentService {
 
                 const comment = new CommentEntity();
                 comment.text = input.text;
-                comment.post = post;
+                comment.post = post.data;
     
                 const savedComment = await this.commentRepository.save(comment);
-                return savedComment;
+                const response = {
+                    message: 'Comment added successfully',
+                    statusCode: 200,
+                    data: savedComment
+                }
+                return response;
             } catch (error) {
                 throw new BadRequestException('Failed to create comment');
             }
         }
 
-        async getAllComments() {
+        async getPaginatedComments(page: number, limit: number) {
             try {
-                const comments = await this.commentRepository.find();
-                return comments;
+                const skip = (page - 1) * limit;
+                const [posts, totalCount] = await this.commentRepository.findAndCount({
+                    take: limit,
+                    skip,
+                });
+                const totalPages = Math.ceil(totalCount / limit);
+                const response = {
+                    message: 'Comments fetched successfully',
+                    statusCode: 200,
+                    data: {
+                        posts,
+                        currentPage: page,
+                        totalPages,
+                    }
+                }
+                return response;
             } catch (error) {
                 throw new NotFoundException('Failed to fetch comments');
             }
@@ -46,7 +65,12 @@ export class CommentService {
                 if (!comment) {
                     throw new NotFoundException('Comment not found');
                 }
-                return comment;
+                const response = {
+                    message: 'Comment fetched successfully',
+                    statusCode: 200,
+                    data: comment
+                }
+                return response;
             } catch (error) {
                 throw new NotFoundException('Failed to fetch comment');
             }
@@ -59,6 +83,11 @@ export class CommentService {
                     throw new NotFoundException('Comment not found');
                 }
                 await this.commentRepository.remove(comment);
+                const response = {
+                    message: 'Comment deleted successfully',
+                    statusCode: 200
+                }
+                return response;
             } catch (error) {
                 throw new BadRequestException('Failed to delete comment');
             }
