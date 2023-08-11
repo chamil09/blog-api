@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query, Post, Delete, Body, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { CreateCommentDto } from 'src/dtos/create-comment.dto';
+import { CreateCommentDto } from '../dtos/create-comment.dto';
 import { ApiCreatedResponse, ApiBadRequestResponse, ApiTags, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
 
 @ApiTags('comments')
