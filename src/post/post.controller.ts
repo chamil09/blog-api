@@ -2,7 +2,6 @@ import { Controller, Get, Put, Delete, Param, Post, Body, UsePipes, ValidationPi
 import { PostService } from './post.service';
 import { CreatePostDto } from 'src/dtos/create-post.dto';
 import { ApiCreatedResponse, ApiBadRequestResponse, ApiTags, ApiOkResponse, ApiNotFoundResponse } from '@nestjs/swagger';
-import { PostEntity } from 'src/entities/post.entity';
 
 @ApiTags('posts')
 @Controller('posts')
