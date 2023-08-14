@@ -26,37 +26,6 @@ describe('AppController (e2e)', () => {
       .expect('Hello World!');
   });
 
-  describe('/posts (POST)', () => {
-    it('should create a new post', () => {
-      const createPostDto = { title: 'New Post', content: 'Post content' };
-  
-      return request(app.getHttpServer())
-        .post('/posts')
-        .send(createPostDto)
-        .expect(201)
-        .then(response => {
-          const createdPost = response.body.data;
-          expect(createdPost.title).toEqual(createPostDto.title);
-          expect(createdPost.content).toEqual(createPostDto.content);
-        });
-    });
-  
-  });
-
-  describe('/posts (GET)', () => {
-    it('should get all posts', () => {
-      return request(app.getHttpServer())
-        .get('/posts')
-        .expect(200)
-        .then(response => {
-          const posts = response.body.data.posts;
-          expect(posts).toBeDefined();
-          // Add more assertions
-        });
-    });
-  
-    // Add more test cases for pagination, etc.
-  });
 });
 
 

@@ -14,7 +14,6 @@ export class PostController {
     })
     @ApiBadRequestResponse({
         description: 'Failed to create a post',
-        
     })
     @UsePipes(new ValidationPipe({ transform: true }))
     async createPost(@Body() input: CreatePostDto) {
