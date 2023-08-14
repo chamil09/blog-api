@@ -26,6 +26,9 @@ export class LoggerMiddleware implements NestMiddleware {
         body: requestBody
       }
       reqLogger.info('Request:', finalRequest);
+
+      getResponseLog(res);
+      
     next();
   }
 }
