@@ -16,7 +16,7 @@ export class LoggerMiddleware implements NestMiddleware {
           level: "info" } },
     });
 
-    const logger = log4js.getLogger();
+    const reqLogger = log4js.getLogger();
 
       const requestBody = { ...req.body };
 
@@ -25,16 +25,43 @@ export class LoggerMiddleware implements NestMiddleware {
         url: req.url,
         body: requestBody
       }
-      logger.info('Request:', finalRequest);
-
+      reqLogger.info('Request:', finalRequest);
     next();
-
-    // res.on('finish', () => {
-    //   logger.info('Response', {
-    //     status: res.status,
-    //     body: res.body,
-    //   });
-    // });
   }
 }
 
+const getResponseLog = (res: Response) => {
+  const resLogger = log4js.getLogger();
+  const rawResponse = res.write;
+  const rawResponseEnd = res.end;
+  const chunkBuffers = [];
+  res.write = (...chunks) => {
+    const resArgs = [];
+    for (let i = 0; i < chunks.length; i++) {
+      resArgs[i] = chunks[i];
+      if (!resArgs[i]) {
+        res.once('drain', res.write);
+        i--;
+      }
+    }
+    if (resArgs[0]) {
+      chunkBuffers.push(Buffer.from(resArgs[0]));
+    }
+    return rawResponse.apply(res, resArgs);
+  };
+
+  res.end = (...chunk) => {
+    const resArgs = [];
+    for (let i = 0; i < chunk.length; i++) {
+      resArgs[i] = chunk[i];
+    }
+    if (resArgs[0]) {
+      chunkBuffers.push(Buffer.from(resArgs[0]));
+    }
+    const body = Buffer.concat(chunkBuffers).toString('utf8');
+
+    resLogger.info('Response:', body);
+    rawResponseEnd.apply(res, resArgs);
+    return body as unknown as Response;
+  };
+};
