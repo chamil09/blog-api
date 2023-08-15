@@ -23,8 +23,8 @@ import { UserModule } from './user/user.module';
     CommentModule,
     UserModule
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
