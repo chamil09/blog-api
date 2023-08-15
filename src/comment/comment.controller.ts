@@ -47,10 +47,10 @@ export class CommentController {
     }
 
     @ApiOkResponse({
-        description: 'Post deleted successfully',
+        description: 'Comment deleted successfully',
     })
     @ApiBadRequestResponse({
-        description: 'Failed to delete post'
+        description: 'Failed to delete comment'
     })
     @Delete(':id')
     async deleteComment(@Param('id') id: number) {

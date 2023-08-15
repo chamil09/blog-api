@@ -5,7 +5,7 @@ import { CommentEntity } from "./comment.entity";
 @Entity('post')
 export class PostEntity extends AbstractEntity {
 
-    @Column({ unique: true })
+    @Column()
     title: string;
 
     @Column()

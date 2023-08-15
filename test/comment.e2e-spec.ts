@@ -3,9 +3,9 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
-describe('PostController (e2e)', () => {
+describe('CommentController (e2e)', () => {
   let app: INestApplication;
-  let postId: number;
+  let commentId: number;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -17,40 +17,30 @@ describe('PostController (e2e)', () => {
     await app.init();
   });
 
-  it('should create a new post', async() => {
+  it('should create a new comment', async() => {
     const response = await request(app.getHttpServer())
-      .post('/posts')
+      .post('/comments')
       .send({
-        title: "This is our e2e post to the Database",
-        content: "We are going to add lot of content to this website in coming weeks"
+        "postId": 10,
+        "text": "testing comment"
       })
       .expect(201)
       .expect('Content-Type', /json/)
-      postId = response.body.data.id;  
+      commentId = response.body.data.id;  
   })
-  it('should fetch the post', async() => {
-    const getRoute = `/posts/` + postId;
+  it('should fetch the comment', async() => {
+    const getRoute = `/comments/` + commentId;
     await request(app.getHttpServer())
       .get(getRoute)
       .expect(200)
   })
-  it('should update the post', async() => {
-    const putRoute = `/posts/` + postId;
-    await request(app.getHttpServer())
-    .put(putRoute)
-      .send({
-        title: "This is our e2e updated post of Database",
-        content: "Content updated here"
-      })
-      .expect(200)
-      .expect('Content-Type', /json/)
-  })
   it('should delete the post', async() => {
-    const deleteRoute = `/posts/` + postId;
+    const deleteRoute = `/comments/` + commentId;
     await request(app.getHttpServer())
       .delete(deleteRoute)
       .expect(200)
   })
+
   });
 
   
