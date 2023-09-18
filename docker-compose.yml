@@ -2,7 +2,7 @@ version: '3.8'  # The version of Docker Compose syntax
 
 services:
   db:
-    container_name: roamsl_db
+    container_name: nest_blog_db
     image: postgres:latest  # Use the latest PostgreSQL Docker image from Docker Hub
     restart: always  # Restart the container automatically if it stops
     environment:
@@ -16,3 +16,6 @@ services:
 
 volumes:
   postgres_data:  # Create a named volume to persist PostgreSQL data
+
+### COMMANDS
+# docker-compose up -d

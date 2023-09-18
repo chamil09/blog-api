@@ -15,6 +15,10 @@ export class DbConfig implements TypeOrmOptionsFactory {
       autoLoadEntities: true,
       //entities: ['dist/**/*.entity.js'],
       synchronize: true,
+        ssl: {
+          rejectUnauthorized: false // This line will fix new error
+        }
     };
   }
 }
+
